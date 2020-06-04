@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">app1</string>
+    <string name="abc">YOUR_APP_ID_HERE</string>
 </resources>
