@@ -5,7 +5,6 @@ import Dialog from "react-native-dialog"
 import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';
 import RenderItemCategory from './RenderItemCategory'
-const reference = database().ref('/category');
 const screen = Dimensions.get('window')
 export default class Category extends Component {
     constructor(params) {

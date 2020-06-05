@@ -60,7 +60,6 @@ export default class RenderItemBook extends Component {
                 .collection('Book')
                 .get()
                 .then(querySnapshot => {
-                    console.log('Total users: ', querySnapshot.size);
                     querySnapshot.forEach(documentSnapshot => {
                         this.state.arrFlatList.push({ name: documentSnapshot.id, title: documentSnapshot.data().title, category: documentSnapshot.data().category, number: documentSnapshot.data().number, author: documentSnapshot.data().author, price: documentSnapshot.data().price })
                     });

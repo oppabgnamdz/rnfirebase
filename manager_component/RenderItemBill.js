@@ -3,7 +3,8 @@ import { Text, StyleSheet, View, Button, FlatList, Dimensions, ScrollView, Touch
 import database from '@react-native-firebase/database';
 import firestore from '@react-native-firebase/firestore';
 import Dialog from "react-native-dialog"
-const screen = Dimensions.get('window')
+import DatePicker from 'react-native-datepicker';
+import Modal from 'react-native-modal';
 class Item extends Component {
 
     render() {
@@ -25,8 +26,7 @@ class Item extends Component {
                 }}>
                     <Text style={{ textAlign: 'center', fontSize: 20 }}>{this.props.item.name}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                        <Text style={{ flex: 0.3, textAlign: 'center' }} >{this.props.item.title}</Text>
-                        <Text style={{ flex: 0.3, textAlign: 'center' }} >{this.props.item.location}</Text>
+                        <Text style={{ flex: 0.3, textAlign: 'center' }} >{this.props.item.date}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -35,14 +35,15 @@ class Item extends Component {
 }
 
 
-export default class RenderItemCategory extends Component {
+export default class RenderItemBill extends Component {
     constructor(params) {
         super(params)
         this.state = {
             getdata: false,
             arrFlatList: [],
             visible: false,
-            name: ''
+            name: '',
+            date: ''
         }
     }
     componentDidMount() {
@@ -50,11 +51,10 @@ export default class RenderItemCategory extends Component {
     }
     _onComfirm = () => {
         firestore()
-            .collection('Category')
+            .collection('Bill')
             .doc(this.state.name)
             .update({
-                title: this.state.title,
-                location: this.state.location
+                date: this.state.date,
             })
             .then(() => {
                 console.log('User updated!');
@@ -67,7 +67,7 @@ export default class RenderItemCategory extends Component {
     }
     _onDelete = () => {
         firestore()
-            .collection('Category')
+            .collection('Bill')
             .doc(this.state.name)
             .delete()
             .then(() => {
@@ -83,11 +83,7 @@ export default class RenderItemCategory extends Component {
             location: text
         })
     }
-    _title = (text) => {
-        this.setState({
-            title: text
-        })
-    }
+
 
 
     data = () => {
@@ -96,11 +92,11 @@ export default class RenderItemCategory extends Component {
         })
         let getData = async () => {
             await firestore()
-                .collection('Category')
+                .collection('Bill')
                 .get()
                 .then(querySnapshot => {
                     querySnapshot.forEach(documentSnapshot => {
-                        this.state.arrFlatList.push({ name: documentSnapshot.id, title: documentSnapshot.data().title, location: documentSnapshot.data().location })
+                        this.state.arrFlatList.push({ name: documentSnapshot.id, date: documentSnapshot.data().date })
                     });
                 });
             this.setState({
@@ -120,26 +116,43 @@ export default class RenderItemCategory extends Component {
                     <FlatList
                         data={this.state.arrFlatList}
                         keyExtractor={item => item.name}
-                        renderItem={({ item }) => <Item item={item} change={() => { this.setState({ visible: !this.state.visible }) }} transfer={(param) => { this.setState({ name: param, location: '', title: '' }) }} />}
+                        renderItem={({ item }) => <Item item={item} change={() => { this.setState({ visible: !this.state.visible }) }} transfer={(param) => { this.setState({ name: param, date: '' }) }} />}
                     />
                 </View>
                 <View>
-                    <Dialog.Container visible={this.state.visible}>
-                        <Dialog.Title>Thay đổi thông tin</Dialog.Title>
-                        <Dialog.Description>
-                            Nhập thông tin
-                                 </Dialog.Description>
-                        <Dialog.Input placeholder='Nhập mô tả' style={{ borderWidth: Platform.OS === 'ios' ? 0 : 1 }} onChangeText={this._title} />
-                        <Dialog.Input placeholder='Nhập vị trí sách ' style={{ borderWidth: Platform.OS === 'ios' ? 0 : 1 }} onChangeText={this._location} />
-                        <Dialog.Button label="Xóa thể loại" onPress={this._onDelete} />
-                        <Dialog.Button label="Đồng ý" onPress={this._onComfirm} />
-                        <Dialog.Button label="Hủy" onPress={() => {
-                            this.setState({
-                                visible: false
-                            })
-                        }} />
-
-                    </Dialog.Container>
+                    <Modal isVisible={this.state.visible} backdropColor={'gray'} backdropOpacity={1} >
+                        <DatePicker
+                            style={{ width: 200 }}
+                            date={this.state.date}
+                            mode="date"
+                            placeholder="select date"
+                            format="DD-MM-YYYY"
+                            minDate="01-01-2020"
+                            maxDate="01-07-2020"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    left: 0,
+                                    top: 4,
+                                    marginLeft: 0
+                                },
+                                dateInput: {
+                                    marginLeft: 36
+                                }
+                            }}
+                            onDateChange={(date) => { this.setState({ date: date }) }}
+                        />
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <Button color='red' title='Hủy' onPress={() => {
+                                this.setState({
+                                    visible: false,
+                                })
+                            }} />
+                            <Button color='red' title='Xác nhận' onPress={this._onComfirm} />
+                        </View>
+                    </Modal>
                 </View>
             </View>
 
