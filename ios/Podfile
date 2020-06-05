@@ -79,11 +79,8 @@ target 'app1' do
 
  
 
-  pod 'RNGoogleSignin', :path => '../node_modules/@react-native-community/google-signin'
 
-  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
-  pod 'RNFBFirestore', :path => '../node_modules/@react-native-firebase/firestore'
 
   target 'app1Tests' do
     inherit! :complete

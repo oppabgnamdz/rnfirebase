@@ -94,10 +94,10 @@ export default class Book extends Component {
         return (
             <View>
                 <ScrollView>
-                    <RenderItemBook />
+                    <RenderItemBook ref={'myRender'} data={this.state.arrList} />
                 </ScrollView>
                 <View style={{ flex: 1 }}>
-                    <Modal isVisible={this.state.visible} backdropColor={'gray'} backdropOpacity='1' >
+                    <Modal isVisible={this.state.visible} backdropColor={'gray'} backdropOpacity={1} >
                         <TextInput placeholder='Nhập tên sách' style={{ borderWidth: 1, padding: 5, marginTop: 10 }} placeholderTextColor='cyan' onChangeText={this._name} />
                         <TextInput placeholder='Tiêu đề' style={{ borderWidth: 1, padding: 5, marginTop: 10 }} placeholderTextColor='cyan' onChangeText={this._title} />
                         <TextInput placeholder='Tác giả' style={{ borderWidth: 1, padding: 5, marginTop: 10 }} placeholderTextColor='cyan' onChangeText={this._author} />
@@ -107,13 +107,13 @@ export default class Book extends Component {
                         <TextInput placeholder='Giá' style={{ borderWidth: 1, padding: 5, marginTop: 10 }} placeholderTextColor='cyan' onChangeText={this._price} />
                         <TextInput placeholder='Số lượng' style={{ borderWidth: 1, padding: 5, marginTop: 10 }} placeholderTextColor='cyan' onChangeText={this._number} />
                         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                            <Button title='Hủy' onPress={() => {
+                            <Button color='red' title='Hủy' onPress={() => {
                                 this.setState({
                                     visible: false,
                                     arrList: []
                                 })
                             }} />
-                            <Button title='Xác nhận' onPress={() => {
+                            <Button color='red' title='Xác nhận' onPress={() => {
                                 this.setState({
                                     visible: false,
                                     arrList: []
@@ -131,6 +131,7 @@ export default class Book extends Component {
                                     .then(() => {
                                         alert('Thêm thành công')
                                     });
+                                this.refs.myRender.data()
                             }} />
                         </View>
                     </Modal>
