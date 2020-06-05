@@ -112,13 +112,11 @@ export default class Statistic extends Component {
                                     .collection('Book')
                                     .doc(this.state.book)
                                     .get()
-                                console.log(obj)
                                 const obj2 = await
                                     firestore()
                                         .collection('Statistic')
                                         .doc(this.state.bill + this.state.book)
                                         .get()
-                                console.log(obj2.exists)
                                 if (parseInt(obj.data().number) > parseInt(this.state.number) && !obj2.exists) {
                                     firestore()
                                         .collection('Statistic')
@@ -137,7 +135,6 @@ export default class Statistic extends Component {
                                                     number: obj.data().number - this.state.number,
                                                 })
                                                 .then(() => {
-                                                    console.log('User updated!');
                                                 });
                                         });
                                 } else {

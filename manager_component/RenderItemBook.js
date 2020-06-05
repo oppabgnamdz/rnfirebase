@@ -67,7 +67,6 @@ export default class RenderItemBook extends Component {
             this.setState({
                 getdata: true
             })
-            console.log(this.state.arrFlatList)
 
         }
         getData();
@@ -112,7 +111,6 @@ export default class RenderItemBook extends Component {
                                 .doc(this.state.name)
                                 .delete(this.state.name)
                                 .then(() => {
-                                    console.log('User deleted!');
                                 });
                             this.setState({
                                 visible: false,
@@ -129,7 +127,6 @@ export default class RenderItemBook extends Component {
                                     price: this.state.price
                                 })
                                 .then(() => {
-                                    console.log('User updated!');
                                 });
                             this.setState({
                                 visible: false,

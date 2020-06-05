@@ -53,22 +53,21 @@ export default class App2 extends Component {
 
 
     _signin = () => {
-        // if (Platform.OS === 'android' && !this.state.user.includes('@') && this.state.pass.length < 6) {
-        //     console.log("nam ngu")
-        //     Alert.alert('Thông tin không hợp lệ')
-        // } else {
-        //     auth().signInWithEmailAndPassword(this.state.user, this.state.pass)
-        //         .then(() => {
-        //             this.props.navigation.navigate(Main)
-        //         }).catch(err => {
-        //             try {
-        //                 Alert.alert('Đăng nhập thất bại')
-        //             } catch (e) {
-        //                 console.log(e)
-        //             }
-        //         })
-        // }
-        this.props.navigation.navigate(Main)
+        if (Platform.OS === 'android' && !this.state.user.includes('@') && this.state.pass.length < 6) {
+            console.log("nam ngu")
+            Alert.alert('Thông tin không hợp lệ')
+        } else {
+            auth().signInWithEmailAndPassword(this.state.user, this.state.pass)
+                .then(() => {
+                    this.props.navigation.navigate(Main)
+                }).catch(err => {
+                    try {
+                        Alert.alert('Đăng nhập thất bại')
+                    } catch (e) {
+                        console.log(e)
+                    }
+                })
+        }
 
 
 

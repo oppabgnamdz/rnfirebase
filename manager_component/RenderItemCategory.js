@@ -57,7 +57,6 @@ export default class RenderItemCategory extends Component {
                 location: this.state.location
             })
             .then(() => {
-                console.log('User updated!');
             });
 
         this.setState({
@@ -71,7 +70,6 @@ export default class RenderItemCategory extends Component {
             .doc(this.state.name)
             .delete()
             .then(() => {
-                console.log('User deleted!');
             });
         this.setState({
             visible: false

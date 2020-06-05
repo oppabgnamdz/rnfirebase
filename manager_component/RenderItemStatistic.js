@@ -93,7 +93,10 @@ export default class RenderItemStatistic extends Component {
                 }
                 this.state.arrView.push({ name: arrBook[i], number: total })
             }
-            console.log(this.state.arrView)
+            this.state.arrView.sort((a, b) => {
+                return b.number - a.number
+            })
+
             this.setState({
                 resetState: true
             })
@@ -101,7 +104,6 @@ export default class RenderItemStatistic extends Component {
         getData(date);
     }
     render() {
-        console.log(this.state.arrView)
         return (
             <View>
                 <TextInput maxLength={2} placeholder='Tháng muốn lọc' style={{ borderWidth: 1, padding: 5, marginTop: 10 }} placeholderTextColor='red' onChangeText={this._date} keyboardType='numeric' />

@@ -29,7 +29,6 @@ export default class Book extends Component {
                             .collection('Category')
                             .get()
                             .then(querySnapshot => {
-                                console.log('Total users: ', querySnapshot.size);
                                 querySnapshot.forEach(documentSnapshot => {
                                     this.state.arrList.push(documentSnapshot.id)
                                 });
