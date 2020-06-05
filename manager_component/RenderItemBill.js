@@ -43,21 +43,25 @@ export default class RenderItemBill extends Component {
             arrFlatList: [],
             visible: false,
             name: '',
-            date: ''
+            date: '',
+            dateToArray: []
         }
     }
     componentDidMount() {
         this.data()
     }
     _onComfirm = () => {
+        for (let i = 0; i < this.state.date.length; i++) {
+            this.state.dateToArray.push(this.state.date.substring(this.state.date.length-i, this.state.date.length));
+        }
         firestore()
             .collection('Bill')
             .doc(this.state.name)
             .update({
                 date: this.state.date,
+                dateToArray:this.state.dateToArray
             })
             .then(() => {
-                console.log('User updated!');
             });
 
         this.setState({
@@ -71,7 +75,6 @@ export default class RenderItemBill extends Component {
             .doc(this.state.name)
             .delete()
             .then(() => {
-                console.log('User deleted!');
             });
         this.setState({
             visible: false
@@ -128,7 +131,7 @@ export default class RenderItemBill extends Component {
                             placeholder="select date"
                             format="DD-MM-YYYY"
                             minDate="01-01-2020"
-                            maxDate="01-07-2020"
+                            maxDate="31-12-2020"
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             customStyles={{

@@ -13,7 +13,8 @@ export default class Bill extends Component {
         this.state = {
             visible: false,
             name: '',
-            date: '1-1-2020',
+            date: '01-01-2020',
+            dateToArray: []
         }
     }
     componentDidMount() {
@@ -43,11 +44,18 @@ export default class Bill extends Component {
 
 
     _onComfirm = () => {
+        this.setState({
+            dateToArray: []
+        })
+        for (let i = 0; i < this.state.date.length + 1; i++) {
+            this.state.dateToArray.push(this.state.date.substring(this.state.date.length - i, this.state.date.length));
+        }
         firestore()
             .collection('Bill')
             .doc(this.state.name)
             .set({
                 date: this.state.date,
+                dateToArray: this.state.dateToArray
             })
             .then(() => {
                 alert('Thêm thành công')
@@ -78,7 +86,7 @@ export default class Bill extends Component {
                             placeholder="select date"
                             format="DD-MM-YYYY"
                             minDate="01-01-2020"
-                            maxDate="01-07-2020"
+                            maxDate="31-12-2020"
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             customStyles={{

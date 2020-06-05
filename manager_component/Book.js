@@ -98,7 +98,7 @@ export default class Book extends Component {
                 </ScrollView>
                 <View style={{ flex: 1 }}>
                     <Modal isVisible={this.state.visible} backdropColor={'gray'} backdropOpacity={1} >
-                      
+                        <TextInput placeholder='Tên sách ' style={{ borderWidth: 1, padding: 5, marginTop: 10 }} placeholderTextColor='cyan' onChangeText={this._name} />
                         <TextInput placeholder='Tiêu đề' style={{ borderWidth: 1, padding: 5, marginTop: 10 }} placeholderTextColor='cyan' onChangeText={this._title} />
                         <TextInput placeholder='Tác giả' style={{ borderWidth: 1, padding: 5, marginTop: 10 }} placeholderTextColor='cyan' onChangeText={this._author} />
                         <Text style={{ textAlign: 'center', fontSize: 20 }}>Thể loại</Text>

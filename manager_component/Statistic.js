@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, Button, Picker, ScrollView } from 'react-native
 import Modal from 'react-native-modal';
 import firestore from '@react-native-firebase/firestore';
 import { TextInput } from 'react-native-gesture-handler';
+import RenderItemStatistic from './RenderItemStatistic';
 export default class Statistic extends Component {
     constructor(params) {
         super(params)
@@ -21,7 +22,9 @@ export default class Statistic extends Component {
             headerRight: () => (
                 <Button title='Add Statistic' onPress={() => {
                     this.setState({
-                        visible: true
+                        visible: true,
+                        arrListBook: [],
+                        arrListBill: []
                     })
                     let getData = async () => {
                         await firestore()
@@ -32,9 +35,7 @@ export default class Statistic extends Component {
                                     this.state.arrListBill.push(documentSnapshot.id)
                                 });
                             });
-                        this.setState({
-                            visible: true
-                        })
+
                         await firestore()
                             .collection('Book')
                             .get()
@@ -90,6 +91,7 @@ export default class Statistic extends Component {
     render() {
         return (
             <View>
+                <RenderItemStatistic />
                 <Modal isVisible={this.state.visible} backdropColor={'gray'} backdropOpacity={1} >
                     <Text style={{ textAlign: 'center', fontSize: 20, color: 'cyan' }}>Chọn mã hóa đơn</Text>
                     {this.showPickerBill()}
@@ -110,12 +112,18 @@ export default class Statistic extends Component {
                                     .collection('Book')
                                     .doc(this.state.book)
                                     .get()
-                                console.log(obj.data().number)
-                                console.log(this.state.number)
-                                if (parseInt(obj.data().number) > parseInt(this.state.number)) {
+                                console.log(obj)
+                                const obj2 = await
                                     firestore()
                                         .collection('Statistic')
-                                        .add({
+                                        .doc(this.state.bill + this.state.book)
+                                        .get()
+                                console.log(obj2.exists)
+                                if (parseInt(obj.data().number) > parseInt(this.state.number) && !obj2.exists) {
+                                    firestore()
+                                        .collection('Statistic')
+                                        .doc(this.state.bill + this.state.book)
+                                        .set({
                                             bill: this.state.bill,
                                             book: this.state.book,
                                             number: this.state.number
@@ -133,7 +141,7 @@ export default class Statistic extends Component {
                                                 });
                                         });
                                 } else {
-                                    alert('Số lượng nhập vào lớn hơn số lượng gốc')
+                                    alert('Xảy ra lỗi nhập ')
                                 }
 
                             }
